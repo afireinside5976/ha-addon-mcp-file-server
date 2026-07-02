@@ -1,11 +1,9 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Python 3.12 already in base image
-RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --upgrade pip
-
+# Install Python deps directly (no venv - Python 3.12 in this base)
 COPY app/requirements.txt /tmp/requirements.txt
-RUN /opt/venv/bin/pip install --no-cache-dir --extra-index-url https://wheels.home-assistant.io/musllinux-index/ -r /tmp/requirements.txt
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 
 COPY app/ /app/
 COPY run.sh /run.sh
